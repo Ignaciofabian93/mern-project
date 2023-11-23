@@ -5,6 +5,7 @@ import CustomButton from "@/components/Buttons/Button";
 import useLogin from "@/hooks/useLogin";
 import { useAppSelector } from "@/store/store";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const LoginForm = () => {
     }
   };
   return (
-    <div>
+    <div className="flex flex-col w-full h-full items-center mt-[180px]">
       <CustomInput
         type={"email"}
         name={"email"}
@@ -42,6 +43,12 @@ const LoginForm = () => {
       ) : (
         <CustomButton text={"Login"} onClick={handleLogin} />
       )}
+      <span className="text-background text-sm font-bold mt-12">
+        {`Don't you have an account yet?. `}
+        <Link href={"/register"} className="cursor-pointer italic">
+          Register here
+        </Link>
+      </span>
     </div>
   );
 };

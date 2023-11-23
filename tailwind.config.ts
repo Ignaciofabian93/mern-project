@@ -10,13 +10,6 @@ module.exports = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    // colors: {
-    // primary: "#160C28",
-    // secondary: "#EFCB68",
-    // tertiary: "#AEB7B3",
-    // background: "#000411",
-    // foreground: "#E1EFE6",
-    // },
     extend: {
       colors: {
         primary: "#5E6572",

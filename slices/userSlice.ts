@@ -75,7 +75,17 @@ const initialState: InitialProps = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.token = "";
+      state.userData = {
+        _id: "",
+        name: "",
+        lastname: "",
+        email: "",
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -105,7 +115,7 @@ export const userSlice = createSlice({
       })
       .addCase(getUserData.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.userData = payload;
+        state.userData = payload.userData;
       })
       .addCase(getUserData.rejected, (state) => {
         state.isLoading = false;
@@ -116,5 +126,7 @@ export const userSlice = createSlice({
       });
   },
 });
+
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

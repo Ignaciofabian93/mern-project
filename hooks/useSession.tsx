@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "@/store/store";
+import { logout } from "@/slices/userSlice";
+import { useRouter } from "next/navigation";
 
 const useSession = () => {
-  const [token, setToken] = useState("");
+  const { token } = useAppSelector((store) => store.user);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getToken();
@@ -11,14 +16,19 @@ const useSession = () => {
   const getToken = () => {
     const item = localStorage.getItem("token");
     if (item) {
-      setToken(item);
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   };
 
-  return { token, isLoggedIn };
+  const handleLogout = async () => {
+    localStorage.removeItem("token");
+    dispatch(logout());
+    router.replace("/login");
+  };
+
+  return { token, isLoggedIn, handleLogout };
 };
 
 export default useSession;

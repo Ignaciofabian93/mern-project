@@ -24,7 +24,7 @@ const CustomInput: React.FC<InputProps> = ({
       value={value}
       onChange={onChange}
       label={label}
-      className="border-2 border-primary my-4 w-96"
+      className="my-2 w-96 rounded-lg shadow-md shadow-primary/60"
     />
   );
 };
