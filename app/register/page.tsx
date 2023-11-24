@@ -7,7 +7,7 @@ import Link from "next/link";
 const Register = () => {
   return (
     <Layout>
-      <div className="w-full h-full">
+      <div className="w-full max-h-screen">
         <Link href={"/login"} className="text-white italic underline">
           Go back to login
         </Link>

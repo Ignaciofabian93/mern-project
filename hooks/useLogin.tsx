@@ -4,8 +4,8 @@ import { useAppDispatch } from "@/store/store";
 
 const useLogin = () => {
   const dispatch = useAppDispatch();
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [message, setMessage] = useState("");
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -19,20 +19,32 @@ const useLogin = () => {
     });
   };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   const handleLogin = async () => {
     const { email, password } = data;
-    if (!email && !password) {
-      setErrorMessage("Please fill in all fields");
+    if (email === "" || password === "") {
+      setMessage("Please fill in all fields");
+      setOpenModal(true);
     } else {
       const result = await dispatch(login(data));
       if (result.payload.token) {
-        setErrorMessage("");
+        setMessage("");
         localStorage.setItem("token", result.payload.token);
       }
     }
   };
 
-  return { data, handleChange, handleLogin };
+  return {
+    data,
+    handleChange,
+    handleLogin,
+    message,
+    handleCloseModal,
+    openModal,
+  };
 };
 
 export default useLogin;

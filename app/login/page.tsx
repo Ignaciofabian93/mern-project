@@ -6,7 +6,9 @@ import LoginForm from "@/components/Forms/LoginForm";
 const Login = () => {
   return (
     <Layout>
-      <LoginForm />
+      <div className="w-full max-h-screen">
+        <LoginForm />
+      </div>
     </Layout>
   );
 };

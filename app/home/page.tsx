@@ -2,23 +2,40 @@
 import React, { useEffect } from "react";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getUserData } from "@/slices/userSlice";
+import { getHistoryForecast } from "@/slices/apiSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import CustomCard from "@/components/Cards/Card";
+import { useRouter } from "next/navigation";
+import {
+  cardImage1,
+  cardImage2,
+  cardImage3,
+  cardImage4,
+} from "@/constants/images";
 import Linechart from "@/components/Charts/LineChart";
 
 const Home = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
-    handleGetUserData();
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(getUserData(token));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    handleGetForecast();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleGetUserData = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const result = await dispatch(getUserData(token));
-      console.log("result: ", result);
-    }
+  const handleGetForecast = async () => {
+    const params = {
+      city: "Santiago",
+      date: "2023-11-20",
+    };
+    await dispatch(getHistoryForecast(params));
   };
 
   const initialData = [
@@ -34,10 +51,42 @@ const Home = () => {
     { time: "2018-12-31", value: 22.67 },
   ];
 
+  const handleWeatherOption = (path: string) => {
+    router.push(`/home/${path}`);
+  };
+
   return (
     <PageLayout>
-      <h1>Home</h1>
-      <Linechart data={initialData} />
+      <div className="h-full flex flex-col justify-evenly">
+        <div className="flex items-center justify-evenly mb-4">
+          <CustomCard
+            image={cardImage1}
+            desc1="Real time weather"
+            desc2="Look for local or world weather information"
+            onClick={() => handleWeatherOption("realtime")}
+          />
+          <CustomCard
+            image={cardImage2}
+            desc1="Forecast"
+            desc2="Search for today's weather"
+            onClick={() => handleWeatherOption("forecast")}
+          />
+        </div>
+        <div className="flex items-center justify-evenly">
+          <CustomCard
+            image={cardImage3}
+            desc1="Weather history"
+            desc2="Look for past weather information"
+            onClick={() => handleWeatherOption("history")}
+          />
+          <CustomCard
+            image={cardImage4}
+            desc1="Future weather"
+            desc2="Get next hours weather"
+            onClick={() => handleWeatherOption("future")}
+          />
+        </div>
+      </div>
     </PageLayout>
   );
 };

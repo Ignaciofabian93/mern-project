@@ -4,7 +4,8 @@ import { useAppDispatch } from "@/store/store";
 
 const useRegister = () => {
   const dispatch = useAppDispatch();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
     name: "",
     lastname: "",
@@ -21,22 +22,47 @@ const useRegister = () => {
     });
   };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   const handleRegister = async () => {
     const { name, lastname, email, password, password2 } = data;
-    if (!name && !lastname && !email && !password && !password2) {
-      setErrorMessage("Please fill in all fields");
+    if (
+      name === "" ||
+      lastname === "" ||
+      email === "" ||
+      password === "" ||
+      password2 === ""
+    ) {
+      setMessage("Please fill in all fields");
+      setOpenModal(true);
     } else if (password !== password2) {
-      setErrorMessage("Passwords do not match");
+      setMessage("Passwords do not match");
+      setOpenModal(true);
     } else {
       const user = { name, lastname, email, password };
       const result = await dispatch(register(user));
+      console.log("result", result);
+
       if (result.payload) {
-        setErrorMessage("");
+        setMessage(result.payload.message);
+        setOpenModal(true);
       }
     }
   };
+  console.log(data);
 
-  return { data, handleChange, handleRegister };
+  console.log(message);
+
+  return {
+    data,
+    handleChange,
+    handleRegister,
+    message,
+    openModal,
+    handleCloseModal,
+  };
 };
 
 export default useRegister;

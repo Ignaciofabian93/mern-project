@@ -8,11 +8,7 @@ interface ButtonProps {
 
 const CustomButton: React.FC<ButtonProps> = ({ text, onClick }) => {
   return (
-    <Button
-      color="default"
-      onClick={onClick}
-      className="mt-4 bg-dark text-white hover:bg-dark transition-all duration-300 ease-in-out"
-    >
+    <Button className="bg-dark text-white" variant="solid" onClick={onClick}>
       {text}
     </Button>
   );

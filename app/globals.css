@@ -10,20 +10,17 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
-.sidebar {
-  height: calc(100vh - 60px);
-}
-
 .icon {
   filter: invert(100%);
   transition: all 0.5s ease-in-out;
 }
 
-.nav-filter {
-  background-color: #a9b4c2;
+.nav {
+  background-color: #a9b4c291;
+  height: calc(100vh - 100px);
 }
 
 .gradient-1 {
   background-color: #7d98a1;
-  background-image: linear-gradient(0deg, #7d98a1 0%, #eef1ef 73%);
+  background-image: linear-gradient(0deg, #eef1ef 0%, #7d98a1 73%);
 }

@@ -6,11 +6,19 @@ import useLogin from "@/hooks/useLogin";
 import { useAppSelector } from "@/store/store";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import AlertModal from "../Modals/AlertModal";
 
 const LoginForm = () => {
   const router = useRouter();
   const { isLoading, token } = useAppSelector((state) => state.user);
-  const { data, handleChange, handleLogin } = useLogin();
+  const {
+    data,
+    handleChange,
+    handleLogin,
+    message,
+    handleCloseModal,
+    openModal,
+  } = useLogin();
 
   useEffect(() => {
     handleNavigate();
@@ -38,10 +46,19 @@ const LoginForm = () => {
         onChange={handleChange}
         label={"Password"}
       />
-      {isLoading ? (
-        <CircularProgress color="primary" aria-label="Login..." />
-      ) : (
-        <CustomButton text={"Login"} onClick={handleLogin} />
+      <div className="mt-4">
+        {isLoading ? (
+          <CircularProgress color="primary" aria-label="Login..." />
+        ) : (
+          <CustomButton text={"Login"} onClick={handleLogin} />
+        )}
+      </div>
+      {message !== "" && openModal && (
+        <AlertModal
+          text={message}
+          onClose={handleCloseModal}
+          isOpen={openModal}
+        />
       )}
       <span className="text-background text-sm font-bold mt-12">
         {`Don't you have an account yet?. `}
