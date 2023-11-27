@@ -1,25 +1,18 @@
-import React, { useState } from "react";
-import { useAppSelector } from "@/store/store";
+import React from "react";
 import Image from "next/image";
 import {
-  menuIcon,
   homeIcon,
   logoutIcon,
   settingsIcon,
   userIcon,
   logomdIcon,
 } from "@/constants/icons";
+import { Tooltip } from "@nextui-org/react";
 import Link from "next/link";
 import useSession from "@/hooks/useSession";
 
 const Navbar = () => {
-  const { userData } = useAppSelector((state) => state.user);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const { handleLogout } = useSession();
-
-  const toggleSidebar = () => {
-    setOpenSidebar(!openSidebar);
-  };
 
   const menuItems = [
     {
@@ -40,76 +33,49 @@ const Navbar = () => {
   ];
 
   return (
-    <nav
-      className="nav w-[60px] fixed left-2 top-10 z-20 nav-filter rounded-md shadow-xl shadow-primary/30 transition-all duration-1000 ease-in-out"
-      style={{ width: openSidebar ? "160px" : "60px" }}
-    >
-      <div className="w-full h-[50px] flex items-center justify-center">
-        <Image
-          src={menuIcon}
-          alt="menu-icon"
-          width={24}
-          height={24}
-          className="cursor-pointer"
-          onClick={toggleSidebar}
-        />
-      </div>
-      <div className="h-full flex flex-col items-center justify-evenly pb-12">
+    <nav className="nav w-[60px] bg-primary fixed left-2 top-10 z-20 nav rounded-md shadow-xl shadow-primary/30 transition-all duration-1000 ease-in-out">
+      <div className="h-full flex flex-col items-center justify-around pb-12">
         <div className="flex items-center justify-around w-full cursor-pointer">
-          <Image src={logomdIcon} alt="logo" width={45} height={45} />
+          <Image src={logomdIcon} alt="logo" width={35} height={35} />
         </div>
         {menuItems.map((item, index) => (
           <div
             key={index}
-            className="bg-secondary w-[80%] flex justify-center items-center h-[50px] rounded-md hover:bg-primary transition-all duration-500 ease-in-out"
+            className="bg-primary/60 w-[60%] flex justify-center items-center h-[40px] rounded-md hover:bg-dark/60 transition-all duration-500 ease-in-out"
           >
-            <Link
-              href={item.href}
-              className="flex items-center justify-around w-full"
+            <Tooltip
+              content={item.title}
+              key={item.href}
+              placement={"right"}
+              className="bg-background"
             >
-              <Image
-                src={item.icon}
-                alt={item.title}
-                width={30}
-                height={30}
-                className="icon hover:invert-0"
-              />
-              {openSidebar && (
-                <span
-                  className="hover:text-white transition-all duration-500 ease-in-out"
-                  style={{
-                    opacity: openSidebar ? 1 : 0,
-                  }}
-                >
-                  {item.title}
-                </span>
-              )}
-            </Link>
+              <Link
+                href={item.href}
+                className="flex items-center justify-around w-full bg-[#2e3251] p-[4px] rounded-md hover:bg-[#34395c] transition-all duration-300 ease-in-out"
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.title}
+                  width={30}
+                  height={30}
+                />
+              </Link>
+            </Tooltip>
           </div>
         ))}
-        <div className="bg-secondary w-[80%] flex justify-center items-center h-[50px] rounded-md hover:bg-primary transition-all duration-500 ease-in-out">
-          <div
-            onClick={handleLogout}
-            className="flex items-center justify-around w-full cursor-pointer"
+        <div className="bg-dark/30 w-[60%] flex justify-center items-center mt-16 h-[40px] rounded-md hover:bg-dark/60 transition-all duration-500 ease-in-out">
+          <Tooltip
+            content={"Logout"}
+            placement={"right"}
+            className="bg-background"
           >
-            <Image
-              src={logoutIcon}
-              alt="logout"
-              width={30}
-              height={30}
-              className="icon hover:invert-0"
-            />
-            {openSidebar && (
-              <span
-                className="hover:text-white transition-all duration-1000 ease-in-out"
-                style={{
-                  opacity: openSidebar ? 1 : 0,
-                }}
-              >
-                Logout
-              </span>
-            )}
-          </div>
+            <div
+              onClick={handleLogout}
+              className="flex items-center justify-around w-full cursor-pointer bg-[#2e3251] p-[4px] rounded-md hover:bg-[#34395c] transition-all duration-300 ease-in-out"
+            >
+              <Image src={logoutIcon} alt="logout" width={30} height={30} />
+            </div>
+          </Tooltip>
         </div>
       </div>
     </nav>

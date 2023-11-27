@@ -12,11 +12,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#5E6572",
-        secondary: "#7D98A1",
-        tertiary: "#A9B4C2",
-        background: "#EEF1EF",
-        dark: "#1C2321",
+        primary: "#424874",
+        secondary: "#a6b1e1",
+        background: "#dcd6f7",
+        background2: "#cacfd6",
+        background3: "#d6e5e3",
+        whiteFont: "#ffffff",
+        blackFont: "#0f0f0f",
       },
     },
   },
@@ -37,19 +39,8 @@ module.exports = {
         },
       },
       themes: {
-        light: {
-          background: "#ffffff",
-          foreground: "#0f0f0f",
-        },
-        dark: {
-          colors: {
-            primary: "#160C28",
-            secondary: "#EFCB68",
-            tertiary: "#AEB7B3",
-            background: "#000411",
-            foreground: "#0f0f0f",
-          },
-        },
+        light: {},
+        dark: {},
       },
     }),
   ],

@@ -2,21 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-}
-
-.icon {
-  filter: invert(100%);
-  transition: all 0.5s ease-in-out;
+  color: #0f0f0f;
 }
 
 .nav {
-  background-color: #a9b4c291;
   height: calc(100vh - 100px);
 }
 

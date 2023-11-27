@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Button,
-} from "@nextui-org/react";
+import { Card, CardFooter, Button } from "@nextui-org/react";
 import Image, { StaticImageData } from "next/image";
 
 interface CardProps {

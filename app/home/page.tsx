@@ -2,90 +2,72 @@
 import React, { useEffect } from "react";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getUserData } from "@/slices/userSlice";
-import { getHistoryForecast } from "@/slices/apiSlice";
+import { getHistoryForecast, getRealTimeForecast } from "@/slices/apiSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import CustomCard from "@/components/Cards/Card";
 import { useRouter } from "next/navigation";
-import {
-  cardImage1,
-  cardImage2,
-  cardImage3,
-  cardImage4,
-} from "@/constants/images";
-import Linechart from "@/components/Charts/LineChart";
+import InfoCard from "@/components/Cards/InfoCard";
+import Map from "@/components/Maps/Map";
 
 const Home = () => {
   const dispatch = useAppDispatch();
+  const { realTime } = useAppSelector((store) => store.api);
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      dispatch(getUserData(token));
-    }
-  }, [dispatch]);
+  console.log("real time: ", realTime);
 
   useEffect(() => {
-    handleGetForecast();
+    handleGetRealTimeForecast();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleGetForecast = async () => {
+  const handleGetRealTimeForecast = async () => {
     const params = {
       city: "Santiago",
-      date: "2023-11-20",
     };
-    await dispatch(getHistoryForecast(params));
+    await dispatch(getRealTimeForecast(params));
   };
 
-  const initialData = [
-    { time: "2018-12-22", value: 32.51 },
-    { time: "2018-12-23", value: 31.11 },
-    { time: "2018-12-24", value: 27.02 },
-    { time: "2018-12-25", value: 27.32 },
-    { time: "2018-12-26", value: 25.17 },
-    { time: "2018-12-27", value: 28.89 },
-    { time: "2018-12-28", value: 25.46 },
-    { time: "2018-12-29", value: 23.92 },
-    { time: "2018-12-30", value: 22.68 },
-    { time: "2018-12-31", value: 22.67 },
-  ];
+  // const initialData = [
+  //   { time: "2018-12-22", value: 32.51 },
+  //   { time: "2018-12-23", value: 31.11 },
+  //   { time: "2018-12-24", value: 27.02 },
+  //   { time: "2018-12-25", value: 27.32 },
+  //   { time: "2018-12-26", value: 25.17 },
+  //   { time: "2018-12-27", value: 28.89 },
+  //   { time: "2018-12-28", value: 25.46 },
+  //   { time: "2018-12-29", value: 23.92 },
+  //   { time: "2018-12-30", value: 22.68 },
+  //   { time: "2018-12-31", value: 22.67 },
+  // ];
 
-  const handleWeatherOption = (path: string) => {
-    router.push(`/home/${path}`);
-  };
+  // const handleWeatherOption = (path: string) => {
+  //   router.push(`/home/${path}`);
+  // };
 
   return (
     <PageLayout>
-      <div className="h-full flex flex-col justify-evenly">
-        <div className="flex items-center justify-evenly mb-4">
-          <CustomCard
-            image={cardImage1}
-            desc1="Real time weather"
-            desc2="Look for local or world weather information"
-            onClick={() => handleWeatherOption("realtime")}
-          />
-          <CustomCard
-            image={cardImage2}
-            desc1="Forecast"
-            desc2="Search for today's weather"
-            onClick={() => handleWeatherOption("forecast")}
-          />
+      <div className="flex gap-2 w-full h-full">
+        <div className="flex flex-col w-2/3 justify-between gap-2 h-full">
+          <div className="bg-slate-600 w-full h-1/2 flex items-center rounded-lg"></div>
+          <div className="w-full h-1/2 flex justify-between items-center">
+            <InfoCard
+              weather={realTime.current.condition.text}
+              dataFrom={realTime.current.last_updated}
+              temperatureC={realTime.current.temp_c}
+              windKph={realTime.current.wind_kph}
+              humidity={realTime.current.humidity}
+              city={realTime.location.name}
+              country={realTime.location.country}
+            />
+            <Map
+              coordinates={{
+                latitude: realTime.location.lat,
+                longitude: realTime.location.lon,
+              }}
+            />
+          </div>
         </div>
-        <div className="flex items-center justify-evenly">
-          <CustomCard
-            image={cardImage3}
-            desc1="Weather history"
-            desc2="Look for past weather information"
-            onClick={() => handleWeatherOption("history")}
-          />
-          <CustomCard
-            image={cardImage4}
-            desc1="Future weather"
-            desc2="Get next hours weather"
-            onClick={() => handleWeatherOption("future")}
-          />
-        </div>
+        <div className="w-1/3 h-full bg-slate-500 rounded-lg"></div>
       </div>
     </PageLayout>
   );
