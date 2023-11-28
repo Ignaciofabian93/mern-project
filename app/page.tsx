@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useSession from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
 
@@ -8,7 +8,6 @@ const App = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(isLoggedIn);
     if (!isLoggedIn) {
       router.replace("/login");
     } else {

@@ -29,7 +29,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   country,
 }) => {
   return (
-    <Card className="w-[262px] h-[265px] bg-white/70 shadow-xl border-2 border-primary-50 px-2 py-4">
+    <Card className="w-[270px] h-[265px] bg-white/70 shadow-xl border-2 border-primary-50 px-2 py-4">
       {weather ? (
         <>
           <CardHeader className="text-xl font-semibold">{weather}</CardHeader>
@@ -50,7 +50,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
         </>
       ) : (
         <div className="w-full h-full flex justify-center items-center">
-          <CircularProgress size="sm" />
+          <CircularProgress size="sm" aria-label="loading..." />
         </div>
       )}
     </Card>

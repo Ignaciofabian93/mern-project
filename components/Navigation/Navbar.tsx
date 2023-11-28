@@ -3,7 +3,8 @@ import Image from "next/image";
 import {
   homeIcon,
   logoutIcon,
-  settingsIcon,
+  cloud1Icon,
+  cloud2Icon,
   userIcon,
   logomdIcon,
 } from "@/constants/icons";
@@ -21,9 +22,14 @@ const Navbar = () => {
       href: "/home",
     },
     {
-      icon: settingsIcon,
-      title: "Settings",
-      href: "/settings",
+      icon: cloud1Icon,
+      title: "Forecast",
+      href: "/home/forecast",
+    },
+    {
+      icon: cloud2Icon,
+      title: "Statistics",
+      href: "/home/records",
     },
     {
       icon: userIcon,

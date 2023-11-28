@@ -31,7 +31,6 @@ export const login = createAsyncThunk(
   "user/login",
   async (user: LoginProps) => {
     const response = await api.post("/login", user);
-    console.log(response);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -56,6 +55,7 @@ export const getUserData = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
+
     return response.data;
   }
 );

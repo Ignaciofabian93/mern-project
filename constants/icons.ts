@@ -6,6 +6,9 @@ import user from "../assets/icons/user.png";
 import logosm from "../assets/icons/logo-sm.png";
 import logomd from "../assets/icons/logo-md.png";
 import mapPin from "../assets/icons/map-red.png";
+import cloud1 from "../assets/icons/cloud-moon.png";
+import cloud2 from "../assets/icons/cloud-sun.png";
+import cloud3 from "../assets/icons/cloud-rain.png";
 
 export const menuIcon = menu;
 export const homeIcon = home;
@@ -15,3 +18,6 @@ export const userIcon = user;
 export const logosmIcon = logosm;
 export const logomdIcon = logomd;
 export const mapPinIcon = mapPin;
+export const cloud1Icon = cloud1;
+export const cloud2Icon = cloud2;
+export const cloud3Icon = cloud3;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { login } from "@/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
+import { getUserData } from "@/slices/userSlice";
 
 const useLogin = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ const useLogin = () => {
       if (result.payload.token) {
         setMessage("");
         localStorage.setItem("token", result.payload.token);
+        await dispatch(getUserData(result.payload.token));
       }
     }
   };

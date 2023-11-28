@@ -8,7 +8,7 @@ interface ButtonProps {
 
 const CustomButton: React.FC<ButtonProps> = ({ text, onClick }) => {
   return (
-    <Button className="bg-dark text-white" variant="solid" onClick={onClick}>
+    <Button className="bg-primary text-white" variant="solid" onClick={onClick}>
       {text}
     </Button>
   );

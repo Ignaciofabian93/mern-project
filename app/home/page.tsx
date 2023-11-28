@@ -1,28 +1,24 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PageLayout from "@/components/Layout/PageLayout";
-import { getUserData } from "@/slices/userSlice";
-import { getHistoryForecast, getRealTimeForecast } from "@/slices/apiSlice";
+import { getRealTimeForecast } from "@/slices/apiSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { useRouter } from "next/navigation";
 import InfoCard from "@/components/Cards/InfoCard";
 import Map from "@/components/Maps/Map";
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const { realTime } = useAppSelector((store) => store.api);
-  const router = useRouter();
-
-  console.log("real time: ", realTime);
+  const [city, setCity] = useState("Cork");
 
   useEffect(() => {
     handleGetRealTimeForecast();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [city]);
 
   const handleGetRealTimeForecast = async () => {
     const params = {
-      city: "Santiago",
+      city: city,
     };
     await dispatch(getRealTimeForecast(params));
   };
@@ -60,6 +56,7 @@ const Home = () => {
               country={realTime.location.country}
             />
             <Map
+              city={city}
               coordinates={{
                 latitude: realTime.location.lat,
                 longitude: realTime.location.lon,

@@ -3,7 +3,7 @@ import Navbar from "../Navigation/Navbar";
 
 const PageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="w-full min-h-screen bg-background3">
+    <main className="w-full min-h-screen gradient-1">
       <div>
         <Navbar />
       </div>
