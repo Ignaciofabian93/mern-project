@@ -10,7 +10,7 @@ export interface RealTimeProps {
     localtime: string;
   };
   current: {
-    last_updated_epoch: string;
+    last_updated_epoch: number;
     last_updated: string;
     temp_c: number;
     temp_f: number;

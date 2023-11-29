@@ -9,6 +9,10 @@ import mapPin from "../assets/icons/map-red.png";
 import cloud1 from "../assets/icons/cloud-moon.png";
 import cloud2 from "../assets/icons/cloud-sun.png";
 import cloud3 from "../assets/icons/cloud-rain.png";
+import sunrise from "../assets/icons/sun.png";
+import sunset from "../assets/icons/sun-set.png";
+import moonrise from "../assets/icons/moon.png";
+import moonset from "../assets/icons/moon-set.png";
 
 export const menuIcon = menu;
 export const homeIcon = home;
@@ -21,3 +25,7 @@ export const mapPinIcon = mapPin;
 export const cloud1Icon = cloud1;
 export const cloud2Icon = cloud2;
 export const cloud3Icon = cloud3;
+export const sunriseIcon = sunrise;
+export const sunsetIcon = sunset;
+export const moonriseIcon = moonrise;
+export const moonsetIcon = moonset;

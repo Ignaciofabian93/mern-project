@@ -1,65 +1,94 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PageLayout from "@/components/Layout/PageLayout";
-import { getRealTimeForecast } from "@/slices/apiSlice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useAppSelector } from "@/store/store";
 import InfoCard from "@/components/Cards/InfoCard";
 import Map from "@/components/Maps/Map";
+import useCurrentWeather from "@/hooks/useCurrentWeather";
+import SmallInput from "@/components/Inputs/SmallInput";
+import CustomButton from "@/components/Buttons/Button";
+import Image from "next/image";
+import {
+  sunriseIcon,
+  sunsetIcon,
+  moonriseIcon,
+  moonsetIcon,
+} from "@/constants/icons";
+import { CircularProgress } from "@nextui-org/react";
 
 const Home = () => {
-  const dispatch = useAppDispatch();
-  const { realTime } = useAppSelector((store) => store.api);
-  const [city, setCity] = useState("Cork");
+  const { handleChangeCity, city, handleGetData } = useCurrentWeather();
+  const { current } = useAppSelector((state) => state.current);
+  const { astronomy } = useAppSelector((state) => state.astronomy);
 
-  useEffect(() => {
-    handleGetRealTimeForecast();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [city]);
-
-  const handleGetRealTimeForecast = async () => {
-    const params = {
-      city: city,
-    };
-    await dispatch(getRealTimeForecast(params));
-  };
-
-  // const initialData = [
-  //   { time: "2018-12-22", value: 32.51 },
-  //   { time: "2018-12-23", value: 31.11 },
-  //   { time: "2018-12-24", value: 27.02 },
-  //   { time: "2018-12-25", value: 27.32 },
-  //   { time: "2018-12-26", value: 25.17 },
-  //   { time: "2018-12-27", value: 28.89 },
-  //   { time: "2018-12-28", value: 25.46 },
-  //   { time: "2018-12-29", value: 23.92 },
-  //   { time: "2018-12-30", value: 22.68 },
-  //   { time: "2018-12-31", value: 22.67 },
-  // ];
-
-  // const handleWeatherOption = (path: string) => {
-  //   router.push(`/home/${path}`);
-  // };
+  console.log("astronomy: ", astronomy);
 
   return (
     <PageLayout>
       <div className="flex gap-2 w-full h-full">
         <div className="flex flex-col w-2/3 justify-between gap-2 h-full">
-          <div className="bg-slate-600 w-full h-1/2 flex items-center rounded-lg"></div>
+          <div className="bg-white/70 w-full h-1/2 flex justify-between rounded-lg px-4 py-4">
+            <div className="h-full w-fit">
+              <p className="text-md font-semibold mb-2">Write a city name</p>
+              <SmallInput
+                type={"text"}
+                name="city"
+                value={city}
+                onChange={handleChangeCity}
+                label={"City"}
+              />
+              <div className="flex items-end justify-between w-56 h-2/3 pb-4">
+                <CustomButton text={"Search"} onClick={handleGetData} />
+              </div>
+            </div>
+            <div className="h-full w-1/3 py-2 flex flex-col justify-center">
+              {astronomy ? (
+                <>
+                  <div className="flex items-center justify-left mb-4">
+                    <Image src={sunriseIcon} alt="sunrise" />
+                    <p className="font-semibold ml-4">
+                      Sunrise: {astronomy.astronomy.astro.sunrise}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-left mb-4">
+                    <Image src={sunsetIcon} alt="sunset" />
+                    <p className="font-semibold ml-4">
+                      Sunset: {astronomy.astronomy.astro.sunset}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-left mb-4">
+                    <Image src={moonriseIcon} alt="moonrise" />
+                    <p className="font-semibold ml-4">
+                      Moonrise: {astronomy.astronomy.astro.moonrise}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-left mb-4">
+                    <Image src={moonsetIcon} alt="moonset" />
+                    <p className="font-semibold ml-4">
+                      Moonset: {astronomy.astronomy.astro.moonset}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <CircularProgress size="sm" aria-label="loading..." />
+              )}
+            </div>
+          </div>
           <div className="w-full h-1/2 flex justify-between items-center">
             <InfoCard
-              weather={realTime.current.condition.text}
-              dataFrom={realTime.current.last_updated}
-              temperatureC={realTime.current.temp_c}
-              windKph={realTime.current.wind_kph}
-              humidity={realTime.current.humidity}
-              city={realTime.location.name}
-              country={realTime.location.country}
+              weather={current.current.condition.text}
+              dataFrom={current.current.last_updated}
+              temperatureC={current.current.temp_c}
+              windKph={current.current.wind_kph}
+              humidity={current.current.humidity}
+              city={current.location.name}
+              country={current.location.country}
             />
             <Map
               city={city}
               coordinates={{
-                latitude: realTime.location.lat,
-                longitude: realTime.location.lon,
+                latitude: current.location.lat,
+                longitude: current.location.lon,
               }}
             />
           </div>

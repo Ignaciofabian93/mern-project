@@ -22,6 +22,8 @@ export const getRealTimeForecast = createAsyncThunk(
         },
       };
       const response = await axios.request(options);
+      console.log("res: ", response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -48,7 +50,7 @@ const initialState: InitialProps = {
       localtime: "",
     },
     current: {
-      last_updated_epoch: "",
+      last_updated_epoch: 0,
       last_updated: "",
       temp_c: 0,
       temp_f: 0,
@@ -89,8 +91,11 @@ export const currentSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getRealTimeForecast.fulfilled, (state, { payload }) => {
+        console.log("payload: ", payload);
+
         state.isLoading = false;
-        state.current = payload;
+        state.current.current = payload.current;
+        state.current.location = payload.location;
       })
       .addCase(getRealTimeForecast.rejected, (state, { error }) => {
         state.isLoading = false;

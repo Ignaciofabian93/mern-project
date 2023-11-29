@@ -42,7 +42,7 @@ const Navbar = () => {
     <nav className="nav w-[60px] bg-primary fixed left-2 top-10 z-20 nav rounded-md shadow-xl shadow-primary/30 transition-all duration-1000 ease-in-out">
       <div className="h-full flex flex-col items-center justify-around pb-12">
         <div className="flex items-center justify-around w-full cursor-pointer">
-          <Image src={logomdIcon} alt="logo" width={35} height={35} />
+          <Image src={logomdIcon} alt="logo" width={35} height={35} priority />
         </div>
         {menuItems.map((item, index) => (
           <div

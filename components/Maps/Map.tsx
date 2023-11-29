@@ -1,9 +1,8 @@
 "use client";
 import { CircularProgress } from "@nextui-org/react";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { Map, Marker, ViewStateChangeEvent } from "react-map-gl";
-import { mapPinIcon } from "@/constants/icons";
+import { Map, ViewStateChangeEvent } from "react-map-gl";
+import { useAppSelector } from "@/store/store";
 
 const token = process.env.MAPBOX_TOKEN;
 
@@ -12,24 +11,29 @@ interface MapProps {
   city: string;
 }
 
-const CustomMap: React.FC<MapProps> = ({ coordinates, city }) => {
+const CustomMap: React.FC<MapProps> = () => {
+  const { current } = useAppSelector((store) => store.current);
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
     zoom: 10,
   });
   const [marker, setMarker] = useState({
-    latitude: coordinates.latitude,
-    longitude: coordinates.longitude,
+    latitude: 0,
+    longitude: 0,
   });
 
   useEffect(() => {
     setViewport({
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
+      latitude: current.location.lat,
+      longitude: current.location.lon,
       zoom: 10,
     });
-  }, [coordinates, city]);
+    setMarker({
+      latitude: current.location.lat,
+      longitude: current.location.lon,
+    });
+  }, [current]);
 
   const handleDrag = (e: ViewStateChangeEvent) => {
     setViewport({
@@ -58,20 +62,13 @@ const CustomMap: React.FC<MapProps> = ({ coordinates, city }) => {
             </span>
           </div>
           <Map
+            key={`${viewport.latitude}-${viewport.longitude}`}
             mapboxAccessToken={token}
             initialViewState={viewport}
             onDrag={handleDrag}
             style={{ width: "100%", height: 265, borderRadius: "10px" }}
             mapStyle="mapbox://styles/mapbox/satellite-v9"
-          >
-            {/* <Marker
-              latitude={marker.latitude}
-              longitude={marker.longitude}
-              anchor="center"
-            >
-              <Image src={mapPinIcon} alt="marker" width={40} height={40} />
-            </Marker> */}
-          </Map>
+          />
         </>
       ) : (
         <div className="w-full h-full flex justify-center items-center">
