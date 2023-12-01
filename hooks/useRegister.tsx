@@ -43,7 +43,6 @@ const useRegister = () => {
     } else {
       const user = { name, lastname, email, password };
       const result = await dispatch(register(user));
-      console.log("result", result);
 
       if (result.payload) {
         setMessage(result.payload.message);
@@ -51,9 +50,6 @@ const useRegister = () => {
       }
     }
   };
-  console.log(data);
-
-  console.log(message);
 
   return {
     data,

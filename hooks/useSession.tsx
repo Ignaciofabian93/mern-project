@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/store";
 import { logout } from "@/slices/userSlice";
+import { getUserData } from "@/slices/userSlice";
 import { useRouter } from "next/navigation";
 
 const useSession = () => {
@@ -11,9 +12,9 @@ const useSession = () => {
 
   useEffect(() => {
     getToken();
-  }, [token]);
+  }, []);
 
-  const getToken = () => {
+  const getToken = async () => {
     const item = localStorage.getItem("token");
     if (item) {
       setIsLoggedIn(true);

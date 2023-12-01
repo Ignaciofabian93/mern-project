@@ -1,9 +1,7 @@
 "use client";
 import { CircularProgress } from "@nextui-org/react";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { Map, Marker } from "react-map-gl";
-import { mapPinIcon } from "@/constants/icons";
+import { Map } from "react-map-gl";
 
 const token = process.env.MAPBOX_TOKEN;
 
@@ -34,15 +32,7 @@ const CustomMap: React.FC<MapProps> = ({ coordinates }) => {
           initialViewState={viewport}
           style={{ width: "100%", height: 265, borderRadius: "10px" }}
           mapStyle="mapbox://styles/mapbox/satellite-v9"
-        >
-          <Marker
-            latitude={coordinates.latitude}
-            longitude={coordinates.longitude}
-            anchor="bottom"
-          >
-            <Image src={mapPinIcon} alt="marker" width={50} height={50} />
-          </Marker>
-        </Map>
+        />
       ) : (
         <div className="w-full h-full flex justify-center items-center">
           <CircularProgress size="sm" />

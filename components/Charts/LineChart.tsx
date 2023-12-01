@@ -1,77 +1,79 @@
-import React, { useEffect, useRef } from "react";
-import { createChart, ColorType, ISeriesApi } from "lightweight-charts";
+import React, { useEffect, useState } from "react";
+import { ForecastHourProps } from "@/interfaces/forecast";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface ChartComponentProps {
-  data: { time: string; value: number }[];
-  colors?: {
-    backgroundColor?: string;
-    lineColor?: string;
-    textColor?: string;
-    areaTopColor?: string;
-    areaBottomColor?: string;
-  };
+  data: ForecastHourProps[];
 }
 
-const Linechart: React.FC<ChartComponentProps> = ({ data, colors = {} }) => {
-  const {
-    backgroundColor = "#fff",
-    lineColor = "#2962FF",
-    textColor = "#000",
-    areaTopColor = "#2962FF",
-    areaBottomColor = "rgba(41, 98, 255, 0.28)",
-  } = colors;
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+    title: {
+      display: true,
+      text: "Forecast",
+    },
+  },
+};
 
-  const chartContainerRef = useRef<HTMLDivElement>(null);
+const Linechart: React.FC<ChartComponentProps> = ({ data }) => {
+  const [labels, setLabels] = useState<string[]>([]);
+  const [temperature, setTemperature] = useState<number[]>([]);
+  const [humidity, setHumidity] = useState<number[]>([]);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (chart && chartContainerRef.current) {
-        chart.applyOptions({
-          width: chartContainerRef.current.clientWidth - 200,
-        });
-      }
-    };
+    getChartdata();
+  }, [data]);
 
-    let chart: ReturnType<typeof createChart>;
-
-    if (chartContainerRef.current) {
-      chart = createChart(chartContainerRef.current, {
-        layout: {
-          background: { type: ColorType.Solid, color: backgroundColor },
-          textColor,
-        },
-        width: chartContainerRef.current.clientWidth,
-        height: 300,
-      });
-      chart.timeScale().fitContent();
-
-      const newSeries = chart.addAreaSeries({
-        lineColor,
-        topColor: areaTopColor,
-        bottomColor: areaBottomColor,
-      });
-      newSeries.setData(data);
-
-      window.addEventListener("resize", handleResize);
+  const getChartdata = () => {
+    if (data) {
+      const info = data.map((item) => item.time.slice(10));
+      const temp = data.map((item) => item.temp_f);
+      const hum = data.map((item) => item.humidity);
+      setLabels(info);
+      setTemperature(temp);
+      setHumidity(hum);
     }
+  };
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
+  const chartData = {
+    labels,
+    datasets: [
+      {
+        label: "Temperature",
+        data: temperature,
+        borderColor: "#424874",
+        backgroundColor: "#424874",
+      },
+      {
+        label: "Humidity",
+        data: humidity,
+        borderColor: "#a6b1e1",
+        backgroundColor: "#a6b1e1",
+      },
+    ],
+  };
 
-      if (chart) {
-        chart.remove();
-      }
-    };
-  }, [
-    data,
-    backgroundColor,
-    lineColor,
-    textColor,
-    areaTopColor,
-    areaBottomColor,
-  ]);
-
-  return <div ref={chartContainerRef} className="max-w-[1000px]" />;
+  return (
+    <div style={{ width: "100%", height: "240px" }}>
+      <Line options={options} data={chartData} />
+    </div>
+  );
 };
 
 export default Linechart;
