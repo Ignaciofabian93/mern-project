@@ -24,7 +24,7 @@ const SmallInput: React.FC<InputProps> = ({
       value={value}
       onChange={onChange}
       label={label}
-      className="w-[200px] h-[60px] rounded-lg shadow-md shadow-primary/60 capitalize"
+      className="w-[250px] h-[50px] rounded-lg shadow-sm shadow-primary/60 capitalize"
     />
   );
 };

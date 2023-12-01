@@ -14,3 +14,18 @@ body {
   background-color: #7d98a1;
   background-image: linear-gradient(145deg, #eef1ef 0%, #7d98a1 93%);
 }
+
+.gradient-2 {
+  background-color: #7d98a1;
+  background-image: linear-gradient(145deg, #eef1ef 0%, #7d98a1 93%);
+}
+
+input[type="date"] {
+  color: "#ccc";
+  font-size: 14px;
+  box-shadow: 0 2px 3px rgba(104, 104, 104, 0.418);
+}
+
+input[type="date"]:focus {
+  outline-width: 0;
+}

@@ -4,7 +4,7 @@ import { StatisticsProps } from "@/interfaces/statistics";
 
 interface StatisticForecastProps {
   city: string;
-  date: string; //YYYY-MM-DD
+  date: string; //YYYY-MM-DD 1week ago only
 }
 
 export const getStatistics = createAsyncThunk(

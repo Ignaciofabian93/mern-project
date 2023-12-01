@@ -1,4 +1,4 @@
-interface ForecastHourProps {
+export interface ForecastHourProps {
   time_epoch: string;
   time: string;
   temp_c: number;
@@ -38,7 +38,7 @@ interface ForecastHourProps {
   uv: number;
 }
 
-interface ForecastDayProps {
+export interface ForecastDayProps {
   date: string;
   date_epoch: number;
   day: {

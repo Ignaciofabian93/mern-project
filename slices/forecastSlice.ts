@@ -4,21 +4,22 @@ import { ForecastProps } from "@/interfaces/forecast";
 
 interface ForecastParamsProps {
   city: string;
-  days: number;
-  date?: string;
+  days: number; // number of forecast days
+  date?: string; // max 10 days from today
 }
 
 export const getForecast = createAsyncThunk(
   "forecast/getForecast",
   async (params: ForecastParamsProps) => {
     try {
-      const { city, days } = params;
+      const { city, days, date } = params;
       const options = {
         method: "GET",
         url: "https://weatherapi-com.p.rapidapi.com/forecast.json",
         params: {
           q: city,
           days: days,
+          dt: date,
         },
         headers: {
           "X-RapidAPI-Key":
