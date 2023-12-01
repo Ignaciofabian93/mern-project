@@ -12,7 +12,15 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface ChartComponentProps {
   data: ForecastHourProps[];
@@ -38,6 +46,7 @@ const Linechart: React.FC<ChartComponentProps> = ({ data }) => {
 
   useEffect(() => {
     getChartdata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const getChartdata = () => {
