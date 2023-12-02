@@ -11,9 +11,11 @@ import {
 import { Tooltip } from "@nextui-org/react";
 import Link from "next/link";
 import useSession from "@/hooks/useSession";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { handleLogout } = useSession();
+  const path = usePathname();
 
   const menuItems = [
     {
@@ -57,6 +59,9 @@ const Navbar = () => {
             >
               <Link
                 href={item.href}
+                style={{
+                  backgroundColor: path === item.href ? "#7d98a1" : "",
+                }}
                 className="flex items-center justify-around w-full bg-[#2e3251] p-[4px] rounded-md hover:bg-[#34395c] transition-all duration-300 ease-in-out"
               >
                 <Image

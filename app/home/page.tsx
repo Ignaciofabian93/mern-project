@@ -8,7 +8,6 @@ import useWeather from "@/hooks/useWeather";
 import SmallInput from "@/components/Inputs/SmallInput";
 import CustomButton from "@/components/Buttons/Button";
 import Image from "next/image";
-import Date from "@/components/Inputs/Date";
 import {
   sunriseIcon,
   sunsetIcon,
@@ -28,14 +27,46 @@ const Home = () => {
     ? forecast.forecast.forecastday.map((el) => el.hour)
     : [];
 
-  console.log("CURRENT: ", current);
-
   return (
     <PageLayout>
       <div className="flex gap-2 w-full h-full">
         <div className="flex flex-col w-2/3 justify-between gap-2 h-full">
           <div className="bg-white/70 w-full h-1/2 flex justify-between rounded-lg px-4 py-4">
             <Linechart data={data[0]} />
+
+            {forecast.forecast ? (
+              <div className="flex flex-col w-[300px] h-full justify-center">
+                <span className="font-semibold text-sm mb-2">
+                  Chances of rain:{" "}
+                  {forecast.forecast.forecastday[0].day.daily_chance_of_rain}%
+                </span>
+                <span className="font-semibold text-sm mb-2">
+                  Average humidity:{" "}
+                  {forecast.forecast.forecastday[0].day.avghumidity}
+                </span>
+                <span className="font-semibold text-sm mb-2">
+                  Average temperature:{" "}
+                  {forecast.forecast.forecastday[0].day.avgtemp_c}
+                </span>
+                <span className="font-semibold text-sm mb-2">
+                  Maximum temperature:{" "}
+                  {forecast.forecast.forecastday[0].day.maxtemp_c}
+                </span>
+                <span className="font-semibold text-sm mb-2">
+                  Minimum temperature:{" "}
+                  {forecast.forecast.forecastday[0].day.mintemp_c}
+                </span>
+                <span className="font-semibold text-sm mb-2">
+                  Total precipitation:{" "}
+                  {forecast.forecast.forecastday[0].day.totalprecip_mm}
+                </span>
+                <span className="font-semibold text-sm mb-2">
+                  UV index: {forecast.forecast.forecastday[0].day.uv}
+                </span>
+              </div>
+            ) : (
+              <CircularProgress size="sm" aria-label="loading..." />
+            )}
           </div>
           <div className="w-full h-1/2 flex justify-between items-center">
             <InfoCard
@@ -56,8 +87,8 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className="w-1/3 h-full flex flex-col justify-between bg-white/70 rounded-lg px-4 py-4">
-          <div className="w-full flex justify-between">
+        <div className="w-1/3 h-full flex flex-col justify-between">
+          <div className="w-full flex justify-between  bg-white/70 rounded-lg px-4 py-4">
             <div>
               <p className="text-sm font-semibold mb-2">Write a city name:</p>
               <SmallInput
@@ -67,24 +98,14 @@ const Home = () => {
                 onChange={handleChange}
                 label={"City"}
               />
-              <p className="text-sm font-semibold mt-6 my-2">Date from:</p>
-              <Date name={"from"} value="" onChange={() => {}} />
-              <p className="text-sm font-semibold mt-6 my-2">Number of days:</p>
-              <SmallInput
-                type={"text"}
-                name="days"
-                value={""}
-                onChange={() => {}}
-                label={"N° of Days"}
-              />
             </div>
             <div className="flex mt-8">
               <CustomButton text={"Search"} onClick={handleGetData} />
             </div>
           </div>
-          <div className="h-fit w-full py-2 flex flex-col justify-center">
+          <div className="h-fit w-full flex flex-col justify-center  bg-white/70 rounded-lg px-4 py-4">
             {astronomy ? (
-              <>
+              <div className="flex flex-col w-full h-full justify-center">
                 <div className="flex items-center justify-left mb-4">
                   <Image src={sunriseIcon} alt="sunrise" />
                   <p className="font-semibold ml-4">
@@ -109,7 +130,7 @@ const Home = () => {
                     Moonset: {astronomy.astronomy.astro.moonset}
                   </p>
                 </div>
-              </>
+              </div>
             ) : (
               <CircularProgress size="sm" aria-label="loading..." />
             )}
