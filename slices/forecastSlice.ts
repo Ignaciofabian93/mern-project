@@ -4,7 +4,7 @@ import { ForecastProps } from "@/interfaces/forecast";
 
 interface ForecastParamsProps {
   city: string;
-  days: number; // number of forecast days
+  days?: number; // number of forecast days
   date?: string; // max 10 days from today
 }
 

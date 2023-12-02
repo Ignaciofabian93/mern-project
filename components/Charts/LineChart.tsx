@@ -52,7 +52,7 @@ const Linechart: React.FC<ChartComponentProps> = ({ data }) => {
   const getChartdata = () => {
     if (data) {
       const info = data.map((item) => item.time.slice(10));
-      const temp = data.map((item) => item.temp_f);
+      const temp = data.map((item) => item.temp_c);
       const hum = data.map((item) => item.humidity);
       setLabels(info);
       setTemperature(temp);

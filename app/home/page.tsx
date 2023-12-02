@@ -16,17 +16,27 @@ import {
   moonsetIcon,
 } from "@/constants/icons";
 import { CircularProgress } from "@nextui-org/react";
+import Linechart from "@/components/Charts/LineChart";
 
 const Home = () => {
   const { handleChange, city, handleGetData } = useWeather();
   const { current } = useAppSelector((state) => state.current);
   const { astronomy } = useAppSelector((state) => state.astronomy);
+  const { forecast } = useAppSelector((state) => state.forecast);
+
+  const data = forecast
+    ? forecast.forecast.forecastday.map((el) => el.hour)
+    : [];
+
+  console.log("CURRENT: ", current);
 
   return (
     <PageLayout>
       <div className="flex gap-2 w-full h-full">
         <div className="flex flex-col w-2/3 justify-between gap-2 h-full">
-          <div className="bg-white/70 w-full h-1/2 flex justify-between rounded-lg px-4 py-4"></div>
+          <div className="bg-white/70 w-full h-1/2 flex justify-between rounded-lg px-4 py-4">
+            <Linechart data={data[0]} />
+          </div>
           <div className="w-full h-1/2 flex justify-between items-center">
             <InfoCard
               weather={current.current.condition.text}
@@ -38,6 +48,7 @@ const Home = () => {
               country={current.location.country}
             />
             <Map
+              city={current.location.name}
               coordinates={{
                 latitude: current.location.lat,
                 longitude: current.location.lon,
