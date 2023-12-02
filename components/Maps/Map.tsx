@@ -11,41 +11,34 @@ interface MapProps {
   city: string;
 }
 
-const CustomMap: React.FC<MapProps> = () => {
-  const { current } = useAppSelector((store) => store.current);
+const CustomMap: React.FC<MapProps> = ({ coordinates }) => {
+  const [coords, setCoords] = useState({
+    lat: 0,
+    lon: 0,
+  });
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
     zoom: 10,
   });
-  const [marker, setMarker] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
 
   useEffect(() => {
     setViewport({
-      latitude: current.location.lat,
-      longitude: current.location.lon,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
       zoom: 10,
     });
-    setMarker({
-      latitude: current.location.lat,
-      longitude: current.location.lon,
+    setCoords({
+      lat: coordinates.latitude,
+      lon: coordinates.longitude,
     });
-  }, [current]);
+  }, [coordinates]);
 
   const handleDrag = (e: ViewStateChangeEvent) => {
-    setViewport({
-      ...viewport,
-      longitude: e.viewState.longitude,
-      latitude: e.viewState.latitude,
-      zoom: e.viewState.zoom,
-    });
-    setMarker({
-      ...marker,
-      latitude: e.viewState.latitude,
-      longitude: e.viewState.longitude,
+    setCoords({
+      ...coords,
+      lat: e.viewState.latitude,
+      lon: e.viewState.longitude,
     });
   };
 
@@ -55,10 +48,10 @@ const CustomMap: React.FC<MapProps> = () => {
         <>
           <div className="w-full h-[30px] bg-black/70 absolute top-0 z-10 flex items-center justify-between px-4">
             <span className="text-whiteFont text-sm font-semibold">
-              Latitude: {viewport.latitude}
+              Latitude: {coords.lat}
             </span>
             <span className="text-whiteFont text-sm font-semibold">
-              Longitude: {viewport.longitude}
+              Longitude: {coords.lon}
             </span>
           </div>
           <Map

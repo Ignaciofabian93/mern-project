@@ -9,11 +9,15 @@ const useWeather = () => {
   const [city, setCity] = useState("Cork");
   const [days, setDays] = useState(7);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     handleGetData();
-  }, []);
+    setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -27,12 +31,20 @@ const useWeather = () => {
   };
 
   const handleGetData = async () => {
-    await dispatch(getRealTimeForecast({ city }));
-    await dispatch(getAstronomy({ city }));
+    if (!city) {
+      setMessage("Please enter a city");
+      return;
+    } else {
+      await dispatch(getRealTimeForecast({ city }));
+      await dispatch(getAstronomy({ city }));
+      await dispatch(getForecast({ city }));
+    }
   };
 
   const handleGetForecast = async () => {
-    await dispatch(getForecast({ city, days, date }));
+    if (city !== "" && days !== 0 && date !== "") {
+      await dispatch(getForecast({ city, days, date }));
+    }
   };
 
   const handleGetStatistics = async () => {
