@@ -12,6 +12,8 @@ export const getForecast = createAsyncThunk(
   "forecast/getForecast",
   async (params: ForecastParamsProps) => {
     try {
+      console.log("params: ", params);
+
       const { city, days, date } = params;
       const options = {
         method: "GET",
@@ -22,12 +24,13 @@ export const getForecast = createAsyncThunk(
           dt: date,
         },
         headers: {
-          "X-RapidAPI-Key":
-            "fc73350737mshae0922d6a49d4f2p1cf5c0jsn5b57c181b999",
+          "X-RapidAPI-Key": "fc73350737mshae0922d6a49d4f2p1cf5c0jsn5b57c181b999",
           "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com",
         },
       };
       const response = await axios.request(options);
+      console.log("res.data: ", response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);

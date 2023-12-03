@@ -1,40 +1,65 @@
 "use client";
-import React, { useEffect } from "react";
-import ScreenLayout from "../_layout";
-import { usePathname } from "next/navigation";
-import useWeather from "@/hooks/useWeather";
+import React from "react";
+import PageLayout from "@/components/Layout/PageLayout";
+import Barchart from "@/components/Charts/Barchart";
+import Donutchart from "@/components/Charts/Donutchart";
 import { useAppSelector } from "@/store/store";
+import { useRouter } from "next/navigation";
+import CustomButton from "@/components/Buttons/Button";
 import Linechart from "@/components/Charts/LineChart";
 
 const WeatherDetails = () => {
-  const path = usePathname();
-  const { handleGetForecast, handleGetStatistics, city, date, days } = useWeather();
-  const { forecast } = useAppSelector((store) => store.forecast);
-  const { statistics } = useAppSelector((store) => store.statistics);
+  const { forecast } = useAppSelector((state) => state.forecast);
+  console.log("fore!!", forecast);
 
-  console.log("FORECAST: ", forecast);
-  console.log("STATISTICS: ", statistics);
+  const router = useRouter();
 
-  useEffect(() => {
-    handleData();
-  }, [city, date, days]);
+  const tempLabels = ["Min Temp °C", "Max Temp °C", "Average Temp °C"];
+  const tempData = forecast.forecast.forecastday[0]
+    ? [
+        { x: "Min", y: forecast.forecast.forecastday[0].day.mintemp_c },
+        { x: "Max", y: forecast.forecast.forecastday[0].day.maxtemp_c },
+        { x: "Avr", y: forecast.forecast.forecastday[0].day.avgtemp_c },
+      ]
+    : [];
 
-  const handleData = async () => {
-    if (path === "/home/forecast") {
-      await handleGetForecast();
-    } else if (path === "/home/statistics") {
-      await handleGetStatistics();
-    }
-  };
+  // const dayTemp = forecast.forecast.forecastday[0] ? [
+  //   {x: forecast.forecast.forecastday[0].hour.map(el => el.time.slice(10)), y: forecast.forecast.forecastday[0].hour.map(el => el.temp_c)}
+  // ] : []
 
-  const dayChartData = forecast.forecast.forecastday.map((data) => data.hour);
+  const humidityData = forecast.current ? [forecast.current.humidity] : [];
+  const heat = 100 - humidityData[0];
+  humidityData.push(heat);
+  const chancesOfRain = forecast.forecast.forecastday[0]
+    ? [forecast.forecast.forecastday[0].day.daily_chance_of_rain]
+    : [];
+  const noRain = 100 - chancesOfRain[0];
+  chancesOfRain.push(noRain);
+
+  const data = forecast ? forecast.forecast.forecastday.map((el) => el.hour) : [];
 
   return (
-    <ScreenLayout>
-      <div className="w-full">
-        <Linechart data={dayChartData[0]} />
+    <PageLayout>
+      <div className="bg-white/70 w-full h-full flex flex-col px-4 py-2 rounded-lg">
+        <div className="w-full h-[50px] flex items-center justify-end">
+          <CustomButton text={"Go back"} onClick={() => router.push("/home")} />
+        </div>
+        <div className="w-full h-full flex flex-wrap gap-x-2 items-start justify-evenly mt-2">
+          <div className="bg-white/70 w-[385px] h-[230px] rounded-lg shadow-md px-4 py-4 flex items-center justify-center">
+            <Barchart info={tempData} labels={tempLabels} />
+          </div>
+          <div className="bg-white/70 w-[385px] h-[230px] rounded-lg shadow-md px-4 py-4 flex items-center justify-center">
+            <Donutchart labels={["Humidity", "Heat"]} series={humidityData} />
+          </div>
+          <div className="bg-white/70 w-[385px] h-[230px] rounded-lg shadow-md px-4 py-4 flex items-center justify-center">
+            <Donutchart labels={["Chances of rain", "No rain"]} series={chancesOfRain} />
+          </div>
+        </div>
+        <div className="bg-white/70 w-full h-[240px] rounded-lg shadow-md px-4 py-4 flex items-center justify-center">
+          <Linechart data={data[0]} />
+        </div>
       </div>
-    </ScreenLayout>
+    </PageLayout>
   );
 };
 

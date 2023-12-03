@@ -1,46 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ForecastHourProps } from "@/interfaces/forecast";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import Chart from "react-apexcharts";
 
 interface ChartComponentProps {
   data: ForecastHourProps[];
 }
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top" as const,
-    },
-    title: {
-      display: true,
-      text: "Forecast",
-    },
-  },
-};
-
 const Linechart: React.FC<ChartComponentProps> = ({ data }) => {
-  const [labels, setLabels] = useState<string[]>([]);
+  const [tag, setTag] = useState<string[]>([]);
   const [temperature, setTemperature] = useState<number[]>([]);
   const [humidity, setHumidity] = useState<number[]>([]);
 
@@ -54,33 +21,35 @@ const Linechart: React.FC<ChartComponentProps> = ({ data }) => {
       const info = data.map((item) => item.time.slice(10));
       const temp = data.map((item) => item.temp_c);
       const hum = data.map((item) => item.humidity);
-      setLabels(info);
+      setTag(info);
       setTemperature(temp);
       setHumidity(hum);
     }
   };
 
-  const chartData = {
-    labels,
-    datasets: [
-      {
-        label: "Temperature",
-        data: temperature,
-        borderColor: "#424874",
-        backgroundColor: "#424874",
-      },
-      {
-        label: "Humidity",
-        data: humidity,
-        borderColor: "#a6b1e1",
-        backgroundColor: "#a6b1e1",
-      },
-    ],
+  const options = {
+    chart: {
+      id: "basic-line",
+    },
+    xaxis: {
+      categories: tag,
+    },
   };
 
+  const series = [
+    {
+      name: "Temperature",
+      data: temperature,
+    },
+    {
+      name: "Humidity",
+      data: humidity,
+    },
+  ];
+
   return (
-    <div style={{ width: "100%", height: "240px" }}>
-      <Line options={options} data={chartData} />
+    <div className="line w-full">
+      <Chart options={options} series={series} type="line" height={230} />
     </div>
   );
 };

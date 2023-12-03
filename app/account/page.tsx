@@ -7,7 +7,6 @@ import UpdateUser from "@/components/Forms/UpdateUser";
 
 const Account = () => {
   const { userData } = useAppSelector((store) => store.user);
-  console.log("user: ", userData);
 
   return (
     <PageLayout>
