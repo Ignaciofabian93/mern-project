@@ -34,6 +34,10 @@ const useUser = () => {
           password: changePassword.newPassword,
         };
         const res = await dispatch(updatePassword(data));
+        setChangePassword({
+          newPassword: "",
+          confirmNewPassword: "",
+        });
         setMessage(res.payload.message);
         setOpenModal(true);
       } else {
