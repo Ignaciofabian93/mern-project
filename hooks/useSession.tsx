@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/store";
 import { logout } from "@/slices/userSlice";
-import { getUserData } from "@/slices/userSlice";
 import { useRouter } from "next/navigation";
 
 const useSession = () => {

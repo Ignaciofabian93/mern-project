@@ -27,38 +27,42 @@ interface InitialProps {
   message: string;
 }
 
-export const login = createAsyncThunk(
-  "user/login",
-  async (user: LoginProps) => {
-    const response = await api.post("/login", user);
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      return response.data.message;
-    }
-  }
-);
-
-export const register = createAsyncThunk(
-  "user/register",
-  async (user: RegisterProps) => {
-    const response = await api.post("/register", user);
+export const login = createAsyncThunk("user/login", async (user: LoginProps) => {
+  const response = await api.post("/login", user);
+  if (response.status === 200) {
     return response.data;
+  } else {
+    return response.data.message;
   }
-);
+});
 
-export const getUserData = createAsyncThunk(
-  "user/getUserData",
-  async (token: string) => {
-    const response = await api.get("/user", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+export const register = createAsyncThunk("user/register", async (user: RegisterProps) => {
+  const response = await api.post("/register", user);
+  return response.data;
+});
 
-    return response.data;
-  }
-);
+export const getUserData = createAsyncThunk("user/getUserData", async (token: string) => {
+  const response = await api.get("/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+});
+
+interface UpdateProps {
+  token: string;
+  password: string;
+}
+export const updatePassword = createAsyncThunk("user/updatePassword", async (info: UpdateProps) => {
+  const response = await api.put("/change-password", info, {
+    headers: {
+      Authorization: `Bearer ${info.token}`,
+    },
+  });
+  return response.data;
+});
 
 const initialState: InitialProps = {
   userData: {
@@ -120,6 +124,16 @@ export const userSlice = createSlice({
       .addCase(getUserData.rejected, (state) => {
         state.isLoading = false;
         state.message = "Not Authorized";
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePassword.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.message = payload;
+      })
+      .addCase(updatePassword.rejected, (state) => {
+        state.isLoading = false;
       })
       .addDefaultCase((state) => {
         return state;

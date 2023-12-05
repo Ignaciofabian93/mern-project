@@ -2,9 +2,8 @@
 import { CircularProgress } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Map, ViewStateChangeEvent } from "react-map-gl";
-import { useAppSelector } from "@/store/store";
 
-const token = process.env.MAPBOX_TOKEN;
+const token = process.env.SECRET_MAPBOX_TOKEN;
 
 interface MapProps {
   coordinates: { latitude: number; longitude: number };
@@ -47,12 +46,8 @@ const CustomMap: React.FC<MapProps> = ({ coordinates }) => {
       {viewport.latitude !== 0 && viewport.longitude !== 0 ? (
         <>
           <div className="w-full h-[30px] bg-black/70 absolute top-0 z-10 flex items-center justify-between px-4">
-            <span className="text-whiteFont text-sm font-semibold">
-              Latitude: {coords.lat}
-            </span>
-            <span className="text-whiteFont text-sm font-semibold">
-              Longitude: {coords.lon}
-            </span>
+            <span className="text-whiteFont text-sm font-semibold">Latitude: {coords.lat}</span>
+            <span className="text-whiteFont text-sm font-semibold">Longitude: {coords.lon}</span>
           </div>
           <Map
             key={`${viewport.latitude}-${viewport.longitude}`}

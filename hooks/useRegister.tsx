@@ -28,13 +28,7 @@ const useRegister = () => {
 
   const handleRegister = async () => {
     const { name, lastname, email, password, password2 } = data;
-    if (
-      name === "" ||
-      lastname === "" ||
-      email === "" ||
-      password === "" ||
-      password2 === ""
-    ) {
+    if (name === "" || lastname === "" || email === "" || password === "" || password2 === "") {
       setMessage("Please fill in all fields");
       setOpenModal(true);
     } else if (password !== password2) {
@@ -45,6 +39,14 @@ const useRegister = () => {
       const result = await dispatch(register(user));
 
       if (result.payload) {
+        setData({
+          name: "",
+          lastname: "",
+          email: "",
+          password: "",
+          password2: "",
+        });
+
         setMessage(result.payload.message);
         setOpenModal(true);
       }

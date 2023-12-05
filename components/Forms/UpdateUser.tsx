@@ -5,25 +5,12 @@ import AlertModal from "../Modals/AlertModal";
 import CustomButton from "../Buttons/Button";
 
 const UpdateUser = () => {
-  const {
-    changePassword,
-    handleChangeData,
-    message,
-    openModal,
-    handleCloseModal,
-    handleSubmit,
-  } = useUser();
+  const { changePassword, handleChangeData, message, openModal, handleCloseModal, handleSubmit } =
+    useUser();
   return (
     <div className="flex flex-col w-full h-full mt-[50px]">
       <div className="flex flex-col w-full h-full items-center justify-center">
         <p className="text-xl font-semibold mb-4">Change password</p>
-        <CustomInput
-          type={"password"}
-          name={"password"}
-          value={changePassword.password}
-          onChange={handleChangeData}
-          label={"Password"}
-        />
         <CustomInput
           type={"password"}
           name={"newPassword"}
@@ -43,11 +30,7 @@ const UpdateUser = () => {
         </div>
       </div>
       {message && openModal && (
-        <AlertModal
-          isOpen={openModal}
-          onClose={handleCloseModal}
-          text={message}
-        />
+        <AlertModal isOpen={openModal} onClose={handleCloseModal} text={message} />
       )}
     </div>
   );

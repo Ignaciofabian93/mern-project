@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { login } from "@/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 import { getUserData } from "@/slices/userSlice";
@@ -31,6 +31,8 @@ const useLogin = () => {
       setOpenModal(true);
     } else {
       const result = await dispatch(login(data));
+      console.log("result login: ", result);
+
       if (result.payload.token) {
         setMessage("");
         localStorage.setItem("token", result.payload.token);

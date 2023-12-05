@@ -5,7 +5,7 @@ import { useAppDispatch } from "@/store/store";
 import { getForecast } from "@/slices/forecastSlice";
 
 const useWeather = () => {
-  const [city, setCity] = useState("Cork");
+  const [city, setCity] = useState("");
   const [message, setMessage] = useState("");
   const dispatch = useAppDispatch();
 

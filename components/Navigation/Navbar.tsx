@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { homeIcon, logoutIcon, userIcon, logomdIcon, settingsIcon } from "@/constants/icons";
+import { homeIcon, logoutIcon, userIcon, logomdIcon } from "@/constants/icons";
 import { Tooltip } from "@nextui-org/react";
 import Link from "next/link";
 import useSession from "@/hooks/useSession";
@@ -15,11 +15,6 @@ const Navbar = () => {
       icon: homeIcon,
       title: "Home",
       href: "/home",
-    },
-    {
-      icon: settingsIcon,
-      title: "Settings",
-      href: "/settings",
     },
     {
       icon: userIcon,

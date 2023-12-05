@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { updatePassword } from "@/slices/userSlice";
+import { useAppDispatch } from "@/store/store";
+import useSession from "./useSession";
 
 const useUser = () => {
+  const dispatch = useAppDispatch();
+  const { token } = useSession();
   const [changePassword, setChangePassword] = useState({
-    password: "",
     newPassword: "",
     confirmNewPassword: "",
   });
@@ -18,7 +22,26 @@ const useUser = () => {
     setOpenModal(false);
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    if (changePassword.newPassword !== changePassword.confirmNewPassword) {
+      setMessage("Passwords don't match");
+      setOpenModal(true);
+      return;
+    } else {
+      if (token) {
+        const data = {
+          token: token,
+          password: changePassword.newPassword,
+        };
+        const res = await dispatch(updatePassword(data));
+        setMessage(res.payload.message);
+        setOpenModal(true);
+      } else {
+        setMessage("You are not logged in");
+        setOpenModal(true);
+      }
+    }
+  };
 
   return {
     changePassword,
